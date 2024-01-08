@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 /*
   cw1.cpp
@@ -81,6 +82,7 @@ public:
 
   int getStaffID()
   {
+    return Librarian::staffId;
   }
 
   void setStaffID(int staffID)
@@ -90,6 +92,8 @@ public:
 
   int getSalary()
   {
+    std::cout << "Salary is " << Librarian::salary;
+    return Librarian::salary;
   }
 
   void setSalary(int salary)
@@ -98,8 +102,24 @@ public:
   }
 };
 
-int main(int argc, char const *argv[])
+class Member : Person
 {
-  /* code */
+private:
+  int memberId;
+  // std::vector<Book> booksLoaned;
+
+public:
+  Member(int memberID, std::string name, std::string address, std::string email)
+  {
+    std::cout << "Member made";
+    setName(name);
+  }
+};
+
+int main()
+{
+
+  Member obj(12, "rat", "poop town", "goat place");
+
   return 0;
 }
