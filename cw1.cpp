@@ -16,9 +16,13 @@ private:
   std::string email;
 
 public:
-  std::string getName()
+  virtual ~Person()
+  {}
+
+  const std::string getName()
   {
-    std::cout << Person::name;
+    std::cout << Person::name << '\n';
+    return Person::name;
   }
 
   void setName(std::string name)
@@ -26,9 +30,9 @@ public:
     Person::name = name;
   }
 
-  std::string getAddress()
+  const std::string getAddress()
   {
-    std::cout << Person::address;
+    std::cout << Person::address << '\n';
   }
 
   void setAddress(std::string address)
@@ -36,9 +40,9 @@ public:
     Person::address = address;
   }
 
-  std::string getEmail()
+  const std::string getEmail()
   {
-    std::cout << Person::email;
+    std::cout << Person::email << '\n';
   }
 
   void setEmail(std::string email)
@@ -56,6 +60,7 @@ private:
 
 public:
   Librarian(int staffId, std::string name, std::string address, std::string email, int salary)
+  // : Person(name, address, email), staffId(staffId), salary(salary)
   {
     std::cout << "object " << this << "created";
   }
@@ -102,7 +107,7 @@ public:
   }
 };
 
-class Member : Person
+class Member : public Person
 {
 private:
   int memberId;
@@ -111,15 +116,41 @@ private:
 public:
   Member(int memberID, std::string name, std::string address, std::string email)
   {
-    std::cout << "Member made";
-    setName(name);
+    std::cout << "Member made" << '\n';
+    Member::memberId = memberID;
+    Person::setName(name);
+    Person::setAddress(address);
+    Person::setEmail(email);
   }
 };
 
 int main()
 {
 
-  Member obj(12, "rat", "poop town", "goat place");
+  std::string type;
+  std::string tempName;
+  std::string tempAddress;
+  std::string tempEmail;
+  std::string tempSalary;
+
+  std::cout << "please enter type: (Liberian - l)(Member - m)" << '\n';
+  std::cin >> type;
+  if (type == "m")
+  {
+    std::cout << "please enter member name: ";
+    std::cin >> tempName;
+    std::cout << "please enter member address: ";
+    std::cin >> tempAddress;
+    std::cout << "please enter member email: ";
+    std::cin >> tempEmail;
+
+    Member obj1(12, tempName, tempAddress, tempEmail);
+
+    // std::cout << "Member Name:"
+    obj1.getName();
+    obj1.getAddress();
+    obj1.getEmail();
+  }
 
   return 0;
 }
