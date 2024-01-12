@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "person.h"
+#include "member.h"
 
 class Librarian : public Person
 {

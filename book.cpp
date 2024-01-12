@@ -12,18 +12,27 @@ Book::Book(int bookID, std::string bookName, std::string authorFirstName, std::s
     Book::authorLastName = authorLastName;
 }
 
-std::string getbookID(){};
+std::string Book::getbookID()
+{
+    return std::to_string(bookID);
+};
 
-std::string getbookName(){};
+std::string Book::getbookName(){
+    return bookName;
+};
 
-std::string getAuthorFirstName(){};
+std::string Book::getAuthorFirstName(){
+    return authorFirstName;
+};
 
-std::string getAuthorLastName(){};
+std::string Book::getAuthorLastName(){
+    return authorLastName;
+};
 
-time_t getDueDate(){};
+time_t Book::getDueDate(){};
 
-void setDueDate(time_t Date){};
+void Book::setDueDate(time_t Date){};
 
-void returnBook(){};
+void Book::returnBook(){};
 
 void borrowBook(Member borrower, time_t dueDate){};

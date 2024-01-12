@@ -2,9 +2,14 @@
 #define _MEMBER_H_
 
 #include <iostream>
+#include <map>
 #include "person.h"
 #include <vector>
 #include "book.h"
+
+class Member;
+
+extern std::vector<Member> memberMap;
 
 class Book;
 
