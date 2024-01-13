@@ -4,7 +4,7 @@ CXXFLAGS = -g -Wall -Wextra -Wpedantic
 .PHONY : all
 all : lSys
 
-lSys : main.o person.o member.o librarian.o book.o
+lSys : main.o person.o member.o librarian.o book.o date.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 main.o : main.cpp person.h member.h librarian.h book.h
@@ -16,10 +16,10 @@ person.o : person.cpp person.h
 member.o : member.cpp member.h person.h book.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-librarian.o : librarian.cpp librarian.h person.h member.h book.h
+librarian.o : librarian.cpp librarian.h person.h member.h book.h date.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-book.o : book.cpp book.h member.h
+book.o : book.cpp book.h member.h date.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 .PHONY : clean

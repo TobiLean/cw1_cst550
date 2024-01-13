@@ -21,7 +21,7 @@ const std::string Member::getMemberID()
     return std::to_string(memberId);
 };
 
-const std::vector<Book> Member::getBooksBorrowed()
+std::vector<Book> Member::getBooksBorrowed()
 {
     return booksLoaned;
 }

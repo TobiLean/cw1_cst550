@@ -3,6 +3,8 @@
 #include <ctime>
 #include <string>
 #include "book.h"
+#include "date.h"
+#include "member.h"
 
 Book::Book(int bookID, std::string bookName, std::string authorFirstName, std::string authorLastName)
 {
@@ -12,27 +14,39 @@ Book::Book(int bookID, std::string bookName, std::string authorFirstName, std::s
     Book::authorLastName = authorLastName;
 }
 
-std::string Book::getbookID()
+const std::string Book::getbookID()
 {
     return std::to_string(bookID);
 };
 
-std::string Book::getbookName(){
+const std::string Book::getbookName(){
     return bookName;
 };
 
-std::string Book::getAuthorFirstName(){
+const std::string Book::getAuthorFirstName(){
     return authorFirstName;
 };
 
-std::string Book::getAuthorLastName(){
+const std::string Book::getAuthorLastName(){
     return authorLastName;
 };
 
-time_t Book::getDueDate(){};
+const Date Book::getDueDate()
+{
+    return Book::dueDate;
+};
 
-void Book::setDueDate(time_t Date){};
+void Book::setDueDate(Date dueDate)
+{
+    Book::dueDate = dueDate;
+};
 
-void Book::returnBook(){};
+void Book::returnBook()
+{
+    
+};
 
-void borrowBook(Member borrower, time_t dueDate){};
+void Book::borrowBook(Member* borrower, Date dueDate)
+{
+    Book::borrower = borrower;
+};

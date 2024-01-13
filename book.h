@@ -5,6 +5,7 @@
 #include <vector>
 #include <ctime>
 #include "member.h"
+#include "date.h"
 
 class Member;
 
@@ -16,27 +17,27 @@ private:
   std::string authorFirstName;
   std::string authorLastName;
   std::string bookType;
-  time_t dueDate;
+  Date dueDate;
   Member* borrower;
 
 public:
   Book(int bookID, std::string bookName, std::string authorFirstName, std::string authorLastName);
 
-  std::string getbookID();
+  const std::string getbookID();
 
-  std::string getbookName();
+  const std::string getbookName();
 
-  std::string getAuthorFirstName();
+  const std::string getAuthorFirstName();
 
-  std::string getAuthorLastName();
+  const std::string getAuthorLastName();
 
-  time_t getDueDate();
+  const Date getDueDate();
 
-  void setDueDate(time_t Date);
+  void setDueDate(Date dueDate);
 
   void returnBook();
 
-  void borrowBook(Member* borrower, time_t dueDate);
+  void borrowBook(Member* borrower, Date dueDate);
 };
 
 #endif

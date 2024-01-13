@@ -2,11 +2,13 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-// #include <map>
+#include <algorithm>
 #include "person.h"
 #include "librarian.h"
 #include "member.h"
 #include "book.h"
+#include "date.h"
+#include <vector>
 
 std::vector<Member> memberMap;
 
@@ -66,7 +68,8 @@ void Librarian::issueBook(int memberID, int bookID)
     }
 
     std::vector<std::string> row, bookDetails;
-    std::string line, word, kl;
+    std::string line, word;
+    int d, m, y;
     int count = 0;
 
     while (std::getline(bookfile, line))
@@ -89,33 +92,79 @@ void Librarian::issueBook(int memberID, int bookID)
 
     Book bookObj(std::stoi(bookDetails[0]), bookDetails[1], bookDetails[2], bookDetails[3]);
 
-    // memberMap[0].setBooksBorrowed(bookObj);
+    std::cout << "Please set a due date, day: ";
+    std::cin >> d;
+    std::cout << "Please set a due date, month: ";
+    std::cin >> m;
+    std::cout << "Please set a due date, year: ";
+    std::cin >> y;
+
+    Date validDate(d, m, y);
+    bookObj.setDueDate(validDate);
 
     for (auto &obj : memberMap)
     {
         if (std::stoi(obj.getMemberID()) == memberID)
         {
+            bookObj.borrowBook(&obj, validDate);
             obj.setBooksBorrowed(bookObj);
-            // Book f =obj.getBooksBorrowed()[0];
             Book f = obj.getBooksBorrowed()[0];
-            std::cout<< f.getbookName();
+            std::cout << f.getbookName();
         }
-        else{
+        else
+        {
             std::cout << "wrong ID: " << obj.getMemberID() << "or is it" << memberID << std::endl;
         }
     }
-
-    // for (int i = 0; i < bookDetails.size(); i++)
-    // {
-    //     std::cout << bookDetails[i] << std::endl;
-    // }
 };
 
 void Librarian::returnBook(int memberID, int bookID)
 {
+    int position = 0;
+    for (auto &obj : memberMap)
+    {
+        if (std::stoi(obj.getMemberID()) == memberID)
+        {
+
+            auto books = obj.getBooksBorrowed();
+            if (!books.empty())
+            {
+                bool bookFound = false;
+                for (size_t i = 0; i < books.size(); ++i)
+                {
+                    if (std::stoi(books[i].getbookID()) == bookID)
+                    {
+                        books.erase(books.begin() + i);
+                        bookFound = true;
+                        break;
+                    }
+                }
+                if (bookFound)
+                {
+                    obj.getBooksBorrowed().clear();
+                    std::cout << obj.getBooksBorrowed().size();
+                    for(const auto& book : books)
+                    {
+                        obj.setBooksBorrowed(book);
+                    }
+                    std::cout << "Book returned. Amount of books left: " << books.size() << std::endl;
+                }
+                else
+                {
+                    std::cout << "No book found with that ID." << std::endl;
+                }
+            }
+            else
+            {
+                std::cout << "No book borrowed by this member!";
+            }
+            return;
+        }
+    }
+     std::cout << "Member ID not found." << std::endl;
 }
 
-void Librarian::displayBorrowedBooks(int memberID)
+const void Librarian::displayBorrowedBooks(int memberID)
 {
 }
 
@@ -123,7 +172,7 @@ void calcFine(int memberID)
 {
 }
 
-int Librarian::getStaffID()
+const int Librarian::getStaffID()
 {
     return Librarian::staffId;
 }
@@ -133,7 +182,7 @@ void Librarian::setStaffID(int staffID)
     Librarian::staffId = staffID;
 }
 
-int Librarian::getSalary()
+const int Librarian::getSalary()
 {
     std::cout << "Salary is " << Librarian::salary << '\n';
     return Librarian::salary;

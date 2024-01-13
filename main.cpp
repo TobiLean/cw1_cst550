@@ -27,11 +27,9 @@ int main()
 {
 
   std::string option;
-  int tempMemID;
   std::string tempName;
   std::string tempAddress;
   std::string tempEmail;
-  int tempBookID;
 
   std::cout << "please enter option: (Librarian - l)(quit program - q)" << '\n';
   std::cin >> option;
@@ -62,24 +60,64 @@ int main()
 
       if (option == "m")
       {
+        int tempMemID;
+        int tempBookID;
+        std::string issueBookOpt;
+        std::string returnBookOpt;
         librarianObj.addMember();
 
-        std::cout << "Please enter member ID to issue book (must be a number): ";
-        std::cin >> tempMemID;
-        std::cout << "Please enter book ID (must be a number): ";
-        std::cin >> tempBookID;
+        do
+        {
 
-        librarianObj.issueBook(tempMemID, tempBookID);
+            std::cout << "Do you want to add a book? (y/n) ";
+            std::cin >> issueBookOpt;
+
+          if (issueBookOpt != "n")
+          {
+            std::cout << "Please enter member ID to issue book (must be a number): ";
+            std::cin >> tempMemID;
+            std::cout << "Please enter book ID (must be a number): ";
+            std::cin >> tempBookID;
+            librarianObj.issueBook(tempMemID, tempBookID);
+          }
+          else
+          {
+            issueBookOpt = "n";
+          }
+
+        } while (issueBookOpt != "n");
+
+        do
+        {
+
+          std::cout << "Do you want to return a book? (y/n) ";
+          std::cin >> returnBookOpt;
+
+          if (returnBookOpt != "n")
+          {
+          std::cout << "Please enter member ID to return book (must be a number): ";
+          std::cin >> tempMemID;
+          std::cout << "Please enter book ID (must be a number): ";
+          std::cin >> tempBookID;
+          librarianObj.returnBook(tempMemID, tempBookID);
+          }
+          else
+          {
+            returnBookOpt = "n";
+          }
+          
+          
+        } while (returnBookOpt != "n");
       }
 
-      
       // std::cout << calcDueDate(10);
-      
+
     } while (option != "q");
     std::cout << "application end!";
     return 0;
   }
-  else{
+  else
+  {
     std::cout << "application end!";
     return 0;
   }

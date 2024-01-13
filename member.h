@@ -22,7 +22,7 @@ private:
 public:
   Member(int memberID, std::string name, std::string address, std::string email);
   const std::string getMemberID();
-  const std::vector<Book> getBooksBorrowed();
+  std::vector<Book> getBooksBorrowed();
   void setBooksBorrowed(Book book);
 };
 

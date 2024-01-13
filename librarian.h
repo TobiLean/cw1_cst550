@@ -22,15 +22,15 @@ public:
 
   void returnBook(int memberID, int bookID);
 
-  void displayBorrowedBooks(int memberID);
+  const void displayBorrowedBooks(int memberID);
 
   void calcFine(int memberID);
 
-  int getStaffID();
+  const int getStaffID();
 
   void setStaffID(int staffID);
 
-  int getSalary();
+  const int getSalary();
 
   void setSalary(int salary);
 };
