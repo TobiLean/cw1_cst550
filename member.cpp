@@ -21,9 +21,9 @@ const std::string Member::getMemberID()
     return std::to_string(memberId);
 };
 
-std::vector<Book> Member::getBooksBorrowed()
+std::vector<Book>& Member::getBooksBorrowed()
 {
-    return booksLoaned;
+    return Member::booksLoaned;
 }
 
 void Member::setBooksBorrowed(Book book)

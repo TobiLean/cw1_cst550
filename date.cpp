@@ -1,4 +1,5 @@
 #include "date.h"
+#include <string>
 
 Date::Date()
 {
@@ -8,19 +9,29 @@ Date::Date()
 };
 Date::Date(int d, int m, int y)
 {
-    this->day = day;
-    this->month = month;
-    this->year = year;
+    this->day = d;
+    this->month = m;
+    this->year = y;
+    
+    Date::fullDate = std::to_string(day) + "/" + std::to_string(month) + "/" + std::to_string(year);
 }
 
-int Date::getDay(){
+int Date::getDay()
+{
     return day;
 }
 
-int Date::getMonth(){
+int Date::getMonth()
+{
     return month;
 }
 
-int Date::getYear(){
+int Date::getYear()
+{
     return year;
+}
+
+std::string Date::getFullDate()
+{
+    return fullDate;
 }

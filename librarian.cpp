@@ -108,25 +108,22 @@ void Librarian::issueBook(int memberID, int bookID)
         {
             bookObj.borrowBook(&obj, validDate);
             obj.setBooksBorrowed(bookObj);
-            Book f = obj.getBooksBorrowed()[0];
-            std::cout << f.getbookName();
+            std::cout << "Book titled: " << bookObj.getbookName() << " borrowed" << '\n';
         }
         else
         {
-            std::cout << "wrong ID: " << obj.getMemberID() << "or is it" << memberID << std::endl;
+            std::cout << "wrong ID: " << memberID << std::endl;
         }
     }
 };
 
 void Librarian::returnBook(int memberID, int bookID)
 {
-    int position = 0;
     for (auto &obj : memberMap)
     {
         if (std::stoi(obj.getMemberID()) == memberID)
         {
-
-            auto books = obj.getBooksBorrowed();
+            std::vector<Book> &books = obj.getBooksBorrowed();
             if (!books.empty())
             {
                 bool bookFound = false;
@@ -134,19 +131,12 @@ void Librarian::returnBook(int memberID, int bookID)
                 {
                     if (std::stoi(books[i].getbookID()) == bookID)
                     {
-                        books.erase(books.begin() + i);
+                        obj.getBooksBorrowed().erase(books.begin() + i);
                         bookFound = true;
-                        break;
                     }
                 }
                 if (bookFound)
                 {
-                    obj.getBooksBorrowed().clear();
-                    std::cout << obj.getBooksBorrowed().size();
-                    for(const auto& book : books)
-                    {
-                        obj.setBooksBorrowed(book);
-                    }
                     std::cout << "Book returned. Amount of books left: " << books.size() << std::endl;
                 }
                 else
@@ -161,11 +151,39 @@ void Librarian::returnBook(int memberID, int bookID)
             return;
         }
     }
-     std::cout << "Member ID not found." << std::endl;
+    std::cout << "Member ID not found." << std::endl;
 }
 
 const void Librarian::displayBorrowedBooks(int memberID)
 {
+    for (auto &member : memberMap)
+    {
+        if (std::stoi(member.getMemberID()) == memberID)
+        {
+            if (member.getBooksBorrowed().size() > 0)
+            {
+                std::cout << "The Members book(s) include: ";
+                if (member.getBooksBorrowed().size() == 1)
+                {
+                    for (Book book : member.getBooksBorrowed())
+                    {
+                        std::cout << book.getbookName();
+                    };
+                }
+                else if (member.getBooksBorrowed().size() > 1)
+                {
+                    for (Book book : member.getBooksBorrowed())
+                    {
+                        std::cout << book.getbookName() << ", ";
+                    };
+                }
+            }
+            else
+            {
+                std::cout << "Member has no borrowed books.";
+            }
+        }
+    }
 }
 
 void calcFine(int memberID)

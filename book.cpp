@@ -43,7 +43,7 @@ void Book::setDueDate(Date dueDate)
 
 void Book::returnBook()
 {
-    
+    Book::borrower = NULL;
 };
 
 void Book::borrowBook(Member* borrower, Date dueDate)

@@ -64,6 +64,7 @@ int main()
         int tempBookID;
         std::string issueBookOpt;
         std::string returnBookOpt;
+        std::string displayBookOpt;
         librarianObj.addMember();
 
         do
@@ -108,6 +109,27 @@ int main()
           
           
         } while (returnBookOpt != "n");
+
+        do
+        {
+
+          std::cout << "Do you want to display all books? (y/n) ";
+          std::cin >> displayBookOpt;
+
+          if (displayBookOpt != "n")
+          {
+          std::cout << "Please enter member ID to display book (must be a number): ";
+          std::cin >> tempMemID;
+          librarianObj.displayBorrowedBooks(tempMemID);
+          std::cout << '\n';
+          }
+          else
+          {
+            displayBookOpt = "n";
+          }
+          
+          
+        } while (displayBookOpt != "n");
       }
 
       // std::cout << calcDueDate(10);
