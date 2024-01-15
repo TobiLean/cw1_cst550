@@ -9,6 +9,7 @@
 #include "book.h"
 #include "date.h"
 #include <vector>
+#include <regex>
 
 std::vector<Member> memberMap;
 
@@ -22,6 +23,7 @@ Librarian::Librarian(int staffID, std::string name, std::string address, std::st
     Librarian::salary = salary;
 };
 
+// Function to add create a member and add the Member to the Member Vector;
 void Librarian::addMember()
 {
 
@@ -29,17 +31,33 @@ void Librarian::addMember()
     std::string tempName;
     std::string tempAddress;
     std::string tempEmail;
+    bool isValidEmail;
+    // std::string& email = tempEmail;
+    const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
 
-    std::cout << "please enter member ID: ";
+    std::cout << "please enter member ID (Must be number): ";
     std::cin >> tempMemID;
     std::cout << "please enter member name: ";
     std::cin >> tempName;
     std::cout << "please enter member address: ";
     std::cin >> tempAddress;
-    std::cout << "please enter member email: ";
-    std::cin >> tempEmail;
 
-    // REMEMBER  TO DO VALIDATION :)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+    do
+    {
+        std::cout << "please enter member email: ";
+        std::cin >> tempEmail;
+
+        if (!std::regex_match(tempEmail, pattern))
+        {
+            isValidEmail = false;
+            std::cout << "Please enter valid email!";
+        }
+        else
+        {
+            isValidEmail = true;
+        }
+
+    } while (isValidEmail == false);
 
     Member memberObj(tempMemID, tempName, tempAddress, tempEmail);
 
@@ -54,9 +72,13 @@ void Librarian::addMember()
 void Librarian::issueBook(int memberID, int bookID)
 {
     std::fstream bookfile;
+    bool isValidDay;
+    bool isValidMonth;
+    bool isValidYear;
 
     bookfile.open("library_books.csv", std::ios::in);
 
+    // check if book is open
     if (!bookfile.is_open())
     {
         std::cerr << "Error opening csv file!" << std::endl;
@@ -78,6 +100,7 @@ void Librarian::issueBook(int memberID, int bookID)
         count++;
     }
 
+    // close book
     bookfile.close();
 
     std::string tempStr = row[bookID];
@@ -90,14 +113,77 @@ void Librarian::issueBook(int memberID, int bookID)
         bookDetails.push_back(word);
     }
 
+    //create book object with each part of the book detail
     Book bookObj(std::stoi(bookDetails[0]), bookDetails[1], bookDetails[2], bookDetails[3]);
 
-    std::cout << "Please set a due date, day: ";
-    std::cin >> d;
-    std::cout << "Please set a due date, month: ";
-    std::cin >> m;
-    std::cout << "Please set a due date, year: ";
-    std::cin >> y;
+    //getting due day from user input and validating date.
+    do
+    {
+        std::cout << "Please set a due day (d): ";
+        std::cin >> d;
+
+        if (d > 31 || d == 0)
+        {
+            isValidDay = false;
+            std::cout << "Please enter valid day, must be between 1 and 31!";
+        }
+        else
+        {
+            isValidDay = true;
+        }
+
+    } while (isValidDay == false);
+
+    //getting due month from user input and validating date.
+    do
+    {
+        std::cout << "Please set due month (m): ";
+        std::cin >> m;
+
+        if (m > 12)
+        {
+            isValidMonth = false;
+            std::cout << "Please enter valid month, month must be between 1 and 12!";
+        }
+        else if (d > 29 && m == 2)
+        {
+            isValidMonth = false;
+            std::cout << "Please enter valid month, this month has less than 30 days!";
+        }
+        else if (d == 31 && (m == 4 || m == 6 || m == 9 || m == 11))
+        {
+            isValidMonth = false;
+            std::cout << "Please enter valid month, this month does not have 31 days!";
+        }
+        else
+        {
+            isValidMonth = true;
+        }
+
+    } while (isValidMonth == false);
+
+    //getting due year from user input and validating date.
+    do
+    {
+        std::cout << "Please set a due year (yyyy): ";
+        std::cin >> y;
+
+        if (std::to_string(y).size() != 4)
+        {
+            isValidYear == false;
+            std::cout << "Please enter valid year of 4 numbers!";
+        }
+        else if (d > 28 && m == 2 && y % 4 == 0)
+        {
+            isValidYear = false;
+            std::cout << "Please enter valid year, February only has 28 days in a leap year!";
+        }
+        else
+        {
+            isValidYear = true;
+        }
+
+    } while (isValidYear == false);
 
     Date validDate(d, m, y);
     bookObj.setDueDate(validDate);
@@ -108,7 +194,8 @@ void Librarian::issueBook(int memberID, int bookID)
         {
             bookObj.borrowBook(&obj, validDate);
             obj.setBooksBorrowed(bookObj);
-            std::cout << "Book titled: " << bookObj.getbookName() << " borrowed." << " It is due on " << bookObj.getDueDate() << '\n';
+            std::cout << "Book titled: " << bookObj.getbookName() << " borrowed."
+                      << " It is due on " << bookObj.getDueDate() << '\n';
         }
         else
         {
@@ -117,6 +204,7 @@ void Librarian::issueBook(int memberID, int bookID)
     }
 };
 
+// function to return book/remove book from booksLoaned in Member class
 void Librarian::returnBook(int memberID, int bookID)
 {
     for (auto &obj : memberMap)
@@ -131,6 +219,7 @@ void Librarian::returnBook(int memberID, int bookID)
                 {
                     if (std::stoi(books[i].getbookID()) == bookID)
                     {
+                        this->calcFine(memberID);
                         obj.getBooksBorrowed().erase(books.begin() + i);
                         bookFound = true;
                     }
@@ -186,8 +275,125 @@ const void Librarian::displayBorrowedBooks(int memberID)
     }
 }
 
-void calcFine(int memberID)
+void Librarian::calcFine(int memberID)
 {
+    bool isValidDay;
+    bool isValidMonth;
+    bool isValidYear;
+    bool bookExpired;
+    int d, m, y, daysDifference, fine;
+    int bookID;
+
+    std::cout << "Please enter bookID to confirm: ";
+    std::cin >> bookID;
+
+    do
+    {
+        std::cout << "Please enter return day (d): ";
+        std::cin >> d;
+
+        if (d > 31 || d == 0)
+        {
+            isValidDay = false;
+            std::cout << "Please enter valid day, must be between 1 and 31!";
+        }
+        else
+        {
+            isValidDay = true;
+        }
+
+    } while (isValidDay == false);
+
+    do
+    {
+        std::cout << "Please enter return month (m): ";
+        std::cin >> m;
+
+        if (m > 12)
+        {
+            isValidMonth = false;
+            std::cout << "Please enter valid month, month must be between 1 and 12!";
+        }
+        else if (d > 29 && m == 2)
+        {
+            isValidMonth = false;
+            std::cout << "Please enter valid month, this month has less than 30 days!";
+        }
+        else if (d == 31 && (m == 4 || m == 6 || m == 9 || m == 11))
+        {
+            isValidMonth = false;
+            std::cout << "Please enter valid month, this month does not have 31 days!";
+        }
+        else
+        {
+            isValidMonth = true;
+        }
+
+    } while (isValidMonth == false);
+
+    do
+    {
+        std::cout << "Please enter return year (yyyy): ";
+        std::cin >> y;
+
+        if (std::to_string(y).size() != 4)
+        {
+            isValidYear == false;
+            std::cout << "Please enter valid year of 4 numbers!";
+        }
+        else if (d > 28 && m == 2 && y % 4 == 0)
+        {
+            isValidYear = false;
+            std::cout << "Please enter valid year, February only has 28 days in a leap year!";
+        }
+        else
+        {
+            isValidYear = true;
+        }
+
+    } while (isValidYear == false);
+
+    Date returnDate(d, m, y);
+
+    for (auto &member : memberMap)
+    {
+        if (memberID == std::stoi(member.getMemberID()))
+        {
+            for (auto &book : member.getBooksBorrowed())
+            {
+                if (std::stoi(book.getbookID()) == bookID)
+                {
+                    if (returnDate > book.getDueDate())
+                    {
+                        daysDifference = returnDate.getNumberOfDays(returnDate, book.getDueDate());
+                        std::cout << daysDifference;
+                        if (daysDifference > 3)
+                        {
+                            bookExpired = true;
+                        }
+                        else
+                        {
+                            bookExpired = false;
+                        }
+                    }
+                }
+                else
+                {
+                    std::cout << "no book like that sir";
+                }
+            };
+        }
+    }
+
+    if (bookExpired == true)
+    {
+        fine = daysDifference * 1;
+        std::cout << "This book has expired, the fine is: " << fine << '\n';
+    }
+    else
+    {
+        std::cout << "This book has not expired!" << '\n';
+    }
 }
 
 const int Librarian::getStaffID()

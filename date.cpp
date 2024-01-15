@@ -31,6 +31,25 @@ int Date::getYear() const
     return year;
 }
 
+int Date::getNumberOfDays(Date d1, Date d2)
+{
+    Date greater;
+    Date lesser;
+    if (d2 > d1)
+    {
+        greater = d2;
+        lesser = d1;
+    }
+    else if (d1 > d2)
+    {
+        greater = d1;
+        lesser = d2;
+    }
+    int total = (greater.getDay() - lesser.getDay()) + ((greater.getMonth() - lesser.getMonth())*30) + ((greater.getYear() - lesser.getYear())*365);
+
+    return total;
+}
+
 // std::string Date::getFullDate() const
 // {
 //     return fullDate;

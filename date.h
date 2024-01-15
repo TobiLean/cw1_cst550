@@ -17,6 +17,7 @@ public:
     int getDay() const;
     int getMonth() const;
     int getYear() const;
+    int getNumberOfDays(Date d1, Date d2);
     // std::string getFullDate() const;
     friend bool operator<(const Date& lhs, const Date& rhs);
     friend bool operator>(const Date& lhs, const Date& rhs);

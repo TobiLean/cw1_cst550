@@ -114,6 +114,7 @@ int main()
           std::cout << "Please enter book ID (must be a number): ";
           std::cin >> tempBookID;
           librarianObj.returnBook(tempMemID, tempBookID);
+          // librarianObj.calcFine(tempMemID);
           }
           else
           {
