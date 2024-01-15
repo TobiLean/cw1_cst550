@@ -14,7 +14,6 @@ class Date
 {
 private:
     int day, month, year;
-    std::string fullDate;
 
 public:
 

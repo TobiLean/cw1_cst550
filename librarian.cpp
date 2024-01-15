@@ -78,7 +78,7 @@ void Librarian::addMember()
 
 /*
     function issue a book to a member
-    @param member's ID and the ID of the book to issue
+    @param memberID,bookId the ID of the member and the ID of the book to issue
 */
 void Librarian::issueBook(int memberID, int bookID)
 {

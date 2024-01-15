@@ -28,4 +28,4 @@ date.o : date.cpp date.h
 .PHONY : clean
 clean :
 	rm -f *.o
-	rm -f main_test
+	rm -f lSys
