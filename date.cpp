@@ -50,11 +50,7 @@ int Date::getNumberOfDays(Date d1, Date d2)
     return total;
 }
 
-// std::string Date::getFullDate() const
-// {
-//     return fullDate;
-// }
-
+//overloading comparison operators
 bool operator<(const Date &lhs, const Date &rhs)
 {
     if (lhs.year < rhs.year)
@@ -102,6 +98,7 @@ bool operator==(const Date &lhs, const Date &rhs)
     return false;
 };
 
+//overloading << console out stream operator
 std::ostream& operator<<(std::ostream& out, const Date& date)
 {
     out << std::to_string(date.getDay()) + "/" + std::to_string(date.getMonth()) + "/" + std::to_string(date.getYear());

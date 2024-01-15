@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <ctime>
 #include "member.h"
 #include "librarian.h"
 #include "book.h"
@@ -13,31 +12,8 @@
   updated: 08/01/2024
 */
 
-std::string calcDueDate(int numOfDays)
-{
-  int timeInSeconds = numOfDays * 24 * 60 * 60;
-
-  time_t now = time(0);
-  now = now + timeInSeconds;
-  char *formatedTime = ctime(&now);
-
-  return formatedTime;
-};
-
 int main()
 {
-
-  // Date date1(15,1,2024);
-  // Date date2(14,1,2024);
-
-  // if(date1 < date2)
-  // {
-  //   std::cout << "date 2 is greater than date 1";
-  // }
-  // else
-  // {
-  //   std::cout << "date 1 is greater than date 2";
-  // }
 
   std::string option;
   std::string tempName;
@@ -47,6 +23,7 @@ int main()
   std::cout << "please enter option: (Librarian - l)(quit program - q)" << '\n';
   std::cin >> option;
 
+  //option to create a new Librarian.
   if (option == "l")
   {
     std::cout << "please enter Librarian name: ";
@@ -57,12 +34,14 @@ int main()
     std::cin >> tempEmail;
 
     Librarian librarianObj(1, tempName, tempAddress, tempEmail, 50);
+    std::cout << "----------";
 
     librarianObj.getName();
     librarianObj.getAddress();
     librarianObj.getEmail();
     librarianObj.getSalary();
 
+    //loop through program until the user quits the system
     do
     {
       std::cout << '\n'
@@ -80,11 +59,12 @@ int main()
         std::string displayBookOpt;
         librarianObj.addMember();
 
+        //option to add a book by calling the issueBook function from the librarian class
         do
         {
 
-            std::cout << "Do you want to add a book? (y/n) ";
-            std::cin >> issueBookOpt;
+          std::cout << "Do you want to add a book? (y/n) ";
+          std::cin >> issueBookOpt;
 
           if (issueBookOpt != "n")
           {
@@ -93,6 +73,7 @@ int main()
             std::cout << "Please enter book ID (must be a number): ";
             std::cin >> tempBookID;
             librarianObj.issueBook(tempMemID, tempBookID);
+            std::cout << "----------";
           }
           else
           {
@@ -101,6 +82,7 @@ int main()
 
         } while (issueBookOpt != "n");
 
+        //option to return a specific book using the returnBook function from the Librarian class
         do
         {
 
@@ -109,21 +91,21 @@ int main()
 
           if (returnBookOpt != "n")
           {
-          std::cout << "Please enter member ID to return book (must be a number): ";
-          std::cin >> tempMemID;
-          std::cout << "Please enter book ID (must be a number): ";
-          std::cin >> tempBookID;
-          librarianObj.returnBook(tempMemID, tempBookID);
-          // librarianObj.calcFine(tempMemID);
+            std::cout << "Please enter member ID to return book (must be a number): ";
+            std::cin >> tempMemID;
+            std::cout << "Please enter book ID (must be a number): ";
+            std::cin >> tempBookID;
+            librarianObj.returnBook(tempMemID, tempBookID);
+            std::cout << "----------";
           }
           else
           {
             returnBookOpt = "n";
           }
-          
-          
+
         } while (returnBookOpt != "n");
 
+        //option to display all the books of a particular member
         do
         {
 
@@ -132,21 +114,19 @@ int main()
 
           if (displayBookOpt != "n")
           {
-          std::cout << "Please enter member ID to display book (must be a number): ";
-          std::cin >> tempMemID;
-          librarianObj.displayBorrowedBooks(tempMemID);
-          std::cout << '\n';
+            std::cout << "Please enter member ID to display book (must be a number): ";
+            std::cin >> tempMemID;
+            librarianObj.displayBorrowedBooks(tempMemID);
+            std::cout << '\n';
+            std::cout << "----------";
           }
           else
           {
             displayBookOpt = "n";
           }
-          
-          
+
         } while (displayBookOpt != "n");
       }
-
-      // std::cout << calcDueDate(10);
 
     } while (option != "q");
     std::cout << "application end!";
@@ -154,6 +134,7 @@ int main()
   }
   else
   {
+    //quit application
     std::cout << "application end!";
     return 0;
   }

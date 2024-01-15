@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <vector>
-#include <ctime>
 #include "member.h"
 #include "date.h"
 

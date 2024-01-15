@@ -11,11 +11,14 @@
 #include <vector>
 #include <regex>
 
-std::vector<Member> memberMap;
 
+std::vector<Member> memberContainer;
+std::string filePath;
+
+//Librarian object constructor
 Librarian::Librarian(int staffID, std::string name, std::string address, std::string email, int salary)
 {
-    std::cout << "object created" << '\n';
+    std::cout << "Librarian created" << '\n';
     Librarian::staffId = staffID;
     Person::setName(name);
     Person::setAddress(address);
@@ -32,10 +35,12 @@ void Librarian::addMember()
     std::string tempAddress;
     std::string tempEmail;
     bool isValidEmail;
-    // std::string& email = tempEmail;
     const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
 
-    std::cout << "please enter member ID (Must be number): ";
+    std::cout<< "enter file path: (must be a csv file): ";
+    std::cin >> filePath;
+
+    std::cout << '\n' << "please enter member ID (Must be number): ";
     std::cin >> tempMemID;
     std::cout << "please enter member name: ";
     std::cin >> tempName;
@@ -61,7 +66,7 @@ void Librarian::addMember()
 
     Member memberObj(tempMemID, tempName, tempAddress, tempEmail);
 
-    memberMap.push_back(memberObj);
+    memberContainer.push_back(memberObj);
 
     memberObj.getMemberID();
     memberObj.getName();
@@ -69,6 +74,7 @@ void Librarian::addMember()
     memberObj.getEmail();
 };
 
+//function to handle issuing of books to members
 void Librarian::issueBook(int memberID, int bookID)
 {
     std::fstream bookfile;
@@ -76,7 +82,8 @@ void Librarian::issueBook(int memberID, int bookID)
     bool isValidMonth;
     bool isValidYear;
 
-    bookfile.open("library_books.csv", std::ios::in);
+    //get csv file path from user
+    bookfile.open(filePath, std::ios::in);
 
     // check if book is open
     if (!bookfile.is_open())
@@ -89,6 +96,7 @@ void Librarian::issueBook(int memberID, int bookID)
         std::cout << "Book Open" << '\n';
     }
 
+    //making vectors to store readfile stream
     std::vector<std::string> row, bookDetails;
     std::string line, word;
     int d, m, y;
@@ -188,7 +196,7 @@ void Librarian::issueBook(int memberID, int bookID)
     Date validDate(d, m, y);
     bookObj.setDueDate(validDate);
 
-    for (auto &obj : memberMap)
+    for (auto &obj : memberContainer)
     {
         if (std::stoi(obj.getMemberID()) == memberID)
         {
@@ -207,7 +215,7 @@ void Librarian::issueBook(int memberID, int bookID)
 // function to return book/remove book from booksLoaned in Member class
 void Librarian::returnBook(int memberID, int bookID)
 {
-    for (auto &obj : memberMap)
+    for (auto &obj : memberContainer)
     {
         if (std::stoi(obj.getMemberID()) == memberID)
         {
@@ -243,9 +251,10 @@ void Librarian::returnBook(int memberID, int bookID)
     std::cout << "Member ID not found." << std::endl;
 }
 
+//function to display all books borrwed/loaned by a user
 const void Librarian::displayBorrowedBooks(int memberID)
 {
-    for (auto &member : memberMap)
+    for (auto &member : memberContainer)
     {
         if (std::stoi(member.getMemberID()) == memberID)
         {
@@ -275,6 +284,7 @@ const void Librarian::displayBorrowedBooks(int memberID)
     }
 }
 
+//function to handle fine calculation for due books.
 void Librarian::calcFine(int memberID)
 {
     bool isValidDay;
@@ -287,6 +297,7 @@ void Librarian::calcFine(int memberID)
     std::cout << "Please enter bookID to confirm: ";
     std::cin >> bookID;
 
+    //validate return date input
     do
     {
         std::cout << "Please enter return day (d): ";
@@ -353,18 +364,25 @@ void Librarian::calcFine(int memberID)
 
     } while (isValidYear == false);
 
+    //creating return date object
     Date returnDate(d, m, y);
 
-    for (auto &member : memberMap)
+    //iterate through memberContainer vector with reference object
+    for (auto &member : memberContainer)
     {
+        //check if member ID matches created a Member's ID
         if (memberID == std::stoi(member.getMemberID()))
         {
+            //iterate through a member's books borrowed vector with reference object
             for (auto &book : member.getBooksBorrowed())
             {
+                //compare book IDs
                 if (std::stoi(book.getbookID()) == bookID)
                 {
+                    //check if book is passed due date
                     if (returnDate > book.getDueDate())
                     {
+                        //calculate date date difference
                         daysDifference = returnDate.getNumberOfDays(returnDate, book.getDueDate());
                         std::cout << daysDifference;
                         if (daysDifference > 3)
@@ -387,6 +405,7 @@ void Librarian::calcFine(int memberID)
 
     if (bookExpired == true)
     {
+        //calculate fine based on differnce in return date and due date
         fine = daysDifference * 1;
         std::cout << "This book has expired, the fine is: " << fine << '\n';
     }
@@ -396,22 +415,26 @@ void Librarian::calcFine(int memberID)
     }
 }
 
+//function to get Librarian's staff ID
 const int Librarian::getStaffID()
 {
     return Librarian::staffId;
 }
 
+//function to set staff ID of Librarian
 void Librarian::setStaffID(int staffID)
 {
     Librarian::staffId = staffID;
 }
 
+//function return Librarian's salary
 const int Librarian::getSalary()
 {
     std::cout << "Salary is " << Librarian::salary << '\n';
     return Librarian::salary;
 }
 
+//function to set Librarian's salary
 void Librarian::setSalary(int salary)
 {
     Librarian::salary = salary;
