@@ -1,6 +1,13 @@
 #ifndef _PERSON_H_
 #define _PERSON_H_
 
+/*
+    person.h
+    Author: M00885480
+    Created: 12/01/2024
+    Updated: 15/01/2024
+*/
+
 #include <string>
 
 class Person

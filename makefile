@@ -22,7 +22,10 @@ librarian.o : librarian.cpp librarian.h person.h member.h book.h date.h
 book.o : book.cpp book.h member.h date.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+date.o : date.cpp date.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 .PHONY : clean
 clean :
 	rm -f *.o
-	rm -f lSys
+	rm -f main_test

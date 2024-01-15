@@ -13,25 +13,41 @@ Date::Date(int d, int m, int y)
     this->month = m;
     this->year = y;
 
-    // Date::fullDate = std::to_string(day) + "/" + std::to_string(month) + "/" + std::to_string(year);
 }
 
+/*
+    function to get day of date object
+    @return an integer of the day
+*/
 int Date::getDay() const
 {
     return day;
 }
 
+/*
+    function to get month of date object
+    @return an integer of the month
+*/
 int Date::getMonth() const
 {
     return month;
 }
 
+/*
+    function to get year of date object
+    @return an integer of the year
+*/
 int Date::getYear() const
 {
     return year;
 }
 
-int Date::getNumberOfDays(Date d1, Date d2)
+/*
+    function to get the numerical difference between two dates
+    @param Date object 1 and Date object 2
+    @return an integer of the subtraction
+*/
+int Date::getDateDiffernce(Date d1, Date d2)
 {
     Date greater;
     Date lesser;
@@ -45,9 +61,9 @@ int Date::getNumberOfDays(Date d1, Date d2)
         greater = d1;
         lesser = d2;
     }
-    int total = (greater.getDay() - lesser.getDay()) + ((greater.getMonth() - lesser.getMonth())*30) + ((greater.getYear() - lesser.getYear())*365);
+    int result = (greater.getDay() - lesser.getDay()) + ((greater.getMonth() - lesser.getMonth())*30) + ((greater.getYear() - lesser.getYear())*365);
 
-    return total;
+    return result;
 }
 
 //overloading comparison operators

@@ -1,6 +1,13 @@
 #ifndef _MEMBER_H_
 #define _MEMBER_H_
 
+/*
+    member.h
+    Author: M00885480
+    Created: 10/01/2024
+    Updated: 15/01/2024
+*/
+
 #include <iostream>
 #include "person.h"
 #include <vector>

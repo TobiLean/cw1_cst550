@@ -1,6 +1,13 @@
 #ifndef _LIBRARIAN_H_
 #define _LIBRARIAN_H_
 
+/*
+    librarian.h
+    Author: M00885480
+    Created: 10/01/2024
+    Updated: 15/01/2024
+*/
+
 #include <iostream>
 #include <string>
 #include "person.h"

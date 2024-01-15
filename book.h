@@ -1,6 +1,13 @@
 #ifndef _BOOK_H_
 #define _BOOK_H_
 
+/*
+    book.h
+    Author: M00885480
+    Created: 10/01/2024
+    Updated: 15/01/2024
+*/
+
 #include <iostream>
 #include <vector>
 #include "member.h"

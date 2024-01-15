@@ -26,7 +26,9 @@ Librarian::Librarian(int staffID, std::string name, std::string address, std::st
     Librarian::salary = salary;
 };
 
-// Function to add create a member and add the Member to the Member Vector;
+/*
+    function to creat new member object
+*/
 void Librarian::addMember()
 {
 
@@ -35,7 +37,7 @@ void Librarian::addMember()
     std::string tempAddress;
     std::string tempEmail;
     bool isValidEmail;
-    const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+    const std::regex PATTERN("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
 
     std::cout<< "enter file path: (must be a csv file): ";
     std::cin >> filePath;
@@ -52,7 +54,7 @@ void Librarian::addMember()
         std::cout << "please enter member email: ";
         std::cin >> tempEmail;
 
-        if (!std::regex_match(tempEmail, pattern))
+        if (!std::regex_match(tempEmail, PATTERN))
         {
             isValidEmail = false;
             std::cout << "Please enter valid email!";
@@ -74,19 +76,22 @@ void Librarian::addMember()
     memberObj.getEmail();
 };
 
-//function to handle issuing of books to members
+/*
+    function issue a book to a member
+    @param member's ID and the ID of the book to issue
+*/
 void Librarian::issueBook(int memberID, int bookID)
 {
-    std::fstream bookfile;
+    std::fstream bookFile;
     bool isValidDay;
     bool isValidMonth;
     bool isValidYear;
 
     //get csv file path from user
-    bookfile.open(filePath, std::ios::in);
+    bookFile.open(filePath, std::ios::in);
 
     // check if book is open
-    if (!bookfile.is_open())
+    if (!bookFile.is_open())
     {
         std::cerr << "Error opening csv file!" << std::endl;
         return;
@@ -102,14 +107,14 @@ void Librarian::issueBook(int memberID, int bookID)
     int d, m, y;
     int count = 0;
 
-    while (std::getline(bookfile, line))
+    while (std::getline(bookFile, line))
     {
         row.push_back(line);
         count++;
     }
 
     // close book
-    bookfile.close();
+    bookFile.close();
 
     std::string tempStr = row[bookID];
 
@@ -212,7 +217,10 @@ void Librarian::issueBook(int memberID, int bookID)
     }
 };
 
-// function to return book/remove book from booksLoaned in Member class
+/*
+    function to return book
+    @param member ID intiger, book id intiger
+*/
 void Librarian::returnBook(int memberID, int bookID)
 {
     for (auto &obj : memberContainer)
@@ -251,7 +259,10 @@ void Librarian::returnBook(int memberID, int bookID)
     std::cout << "Member ID not found." << std::endl;
 }
 
-//function to display all books borrwed/loaned by a user
+/*
+    function to display books borrowed by member
+    @param member ID
+*/
 const void Librarian::displayBorrowedBooks(int memberID)
 {
     for (auto &member : memberContainer)
@@ -284,7 +295,10 @@ const void Librarian::displayBorrowedBooks(int memberID)
     }
 }
 
-//function to handle fine calculation for due books.
+/*
+    function to calculate fine on book returns
+    @param member ID
+*/
 void Librarian::calcFine(int memberID)
 {
     bool isValidDay;
@@ -383,7 +397,7 @@ void Librarian::calcFine(int memberID)
                     if (returnDate > book.getDueDate())
                     {
                         //calculate date date difference
-                        daysDifference = returnDate.getNumberOfDays(returnDate, book.getDueDate());
+                        daysDifference = returnDate.getDateDiffernce(returnDate, book.getDueDate());
                         std::cout << daysDifference;
                         if (daysDifference > 3)
                         {
@@ -415,13 +429,19 @@ void Librarian::calcFine(int memberID)
     }
 }
 
-//function to get Librarian's staff ID
+/*
+    function to get staff ID from Librarian
+    @return integer of staff ID
+*/
 const int Librarian::getStaffID()
 {
     return Librarian::staffId;
 }
 
-//function to set staff ID of Librarian
+/*
+    function to set staff ID for Librarian
+    @param integer of staff ID
+*/
 void Librarian::setStaffID(int staffID)
 {
     Librarian::staffId = staffID;
@@ -434,7 +454,10 @@ const int Librarian::getSalary()
     return Librarian::salary;
 }
 
-//function to set Librarian's salary
+/*
+    function to set Librarian salary
+    @param integer of salary to set for Librarian
+*/
 void Librarian::setSalary(int salary)
 {
     Librarian::salary = salary;
