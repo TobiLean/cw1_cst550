@@ -14,10 +14,15 @@ public:
     Date();
     Date(int day, int month, int year);
 
-    int getDay();
-    int getMonth();
-    int getYear();
-    std::string getFullDate();
+    int getDay() const;
+    int getMonth() const;
+    int getYear() const;
+    // std::string getFullDate() const;
+    friend bool operator<(const Date& lhs, const Date& rhs);
+    friend bool operator>(const Date& lhs, const Date& rhs);
+    friend bool operator==(const Date& lhs, const Date& rhs);
 };
+
+std::ostream& operator<<(std::ostream& out, const Date& date);
 
 #endif

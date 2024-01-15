@@ -7,7 +7,7 @@ all : lSys
 lSys : main.o person.o member.o librarian.o book.o date.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-main.o : main.cpp person.h member.h librarian.h book.h
+main.o : main.cpp person.h member.h librarian.h book.h date.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 person.o : person.cpp person.h

@@ -4,6 +4,7 @@
 #include "member.h"
 #include "librarian.h"
 #include "book.h"
+#include "date.h"
 
 /*
   cw1.cpp
@@ -25,6 +26,18 @@ std::string calcDueDate(int numOfDays)
 
 int main()
 {
+
+  // Date date1(15,1,2024);
+  // Date date2(14,1,2024);
+
+  // if(date1 < date2)
+  // {
+  //   std::cout << "date 2 is greater than date 1";
+  // }
+  // else
+  // {
+  //   std::cout << "date 1 is greater than date 2";
+  // }
 
   std::string option;
   std::string tempName;

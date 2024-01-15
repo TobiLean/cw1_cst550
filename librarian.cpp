@@ -108,7 +108,7 @@ void Librarian::issueBook(int memberID, int bookID)
         {
             bookObj.borrowBook(&obj, validDate);
             obj.setBooksBorrowed(bookObj);
-            std::cout << "Book titled: " << bookObj.getbookName() << " borrowed" << '\n';
+            std::cout << "Book titled: " << bookObj.getbookName() << " borrowed." << " It is due on " << bookObj.getDueDate() << '\n';
         }
         else
         {
